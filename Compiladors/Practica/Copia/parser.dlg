@@ -1,0 +1,218 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: mountains.g
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.33MR33
+ */
+
+#define ANTLR_VERSION	13333
+#include "pcctscfg.h"
+#include "pccts_stdio.h"
+
+#include <string>
+#include <iostream>
+#include <vector>
+#include <iterator>
+#include <map>
+using namespace std;
+
+// struct to store information about tokens
+typedef struct {
+  string kind;
+  string text;
+} Attrib;
+
+// function to fill token information (predeclaration)
+void zzcr_attr(Attrib *attr, int type, char *text);
+
+// fields for AST nodes
+#define AST_FIELDS string kind; string text;
+#include "ast.h"
+
+// macro to create a new AST node (and function predeclaration)
+#define zzcr_ast(as,attr,ttype,textt) as=createASTnode(attr,ttype,textt)
+AST* createASTnode(Attrib* attr, int ttype, char *textt);
+//#define createASTlist #0=new AST;(#0)->kind="list";(#0)->right=NULL;(#0)->down=_sibling;
+#include "antlr.h"
+#include "ast.h"
+#include "tokens.h"
+#include "dlgdef.h"
+LOOKAHEAD
+
+void
+#ifdef __USE_PROTOS
+zzerraction(void)
+#else
+zzerraction()
+#endif
+{
+	(*zzerr)("invalid token");
+	zzadvance();
+	zzskip();
+}
+>>
+
+
+%%START
+
+@
+	<<
+		NLA = 1;
+	>>
+
+\/
+	<<
+		NLA = BAR;
+	>>
+
+\\
+	<<
+		NLA = DOWN;
+	>>
+
+\-
+	<<
+		NLA = HIPHEN;
+	>>
+
+;
+	<<
+		NLA = CONCAT;
+	>>
+
+[0-9]+
+	<<
+		NLA = NUM;
+	>>
+
+\*
+	<<
+		NLA = STAR;
+	>>
+
+#
+	<<
+		NLA = REF;
+	>>
+
+\+
+	<<
+		NLA = PLUS;
+	>>
+
+,
+	<<
+		NLA = COMMA;
+	>>
+
+\(
+	<<
+		NLA = LPAR;
+	>>
+
+\)
+	<<
+		NLA = RPAR;
+	>>
+
+is
+	<<
+		NLA = IS;
+	>>
+
+AND
+	<<
+		NLA = AND;
+	>>
+
+OR
+	<<
+		NLA = OR;
+	>>
+
+NOT
+	<<
+		NLA = NOT;
+	>>
+
+Peak | Valley
+	<<
+		NLA = CREATEFUNC;
+	>>
+
+Match
+	<<
+		NLA = MATCHFUNC;
+	>>
+
+Height
+	<<
+		NLA = HEIGHTFUNC;
+	>>
+
+Wellformed
+	<<
+		NLA = WELLFORMEDFUNC;
+	>>
+
+Draw
+	<<
+		NLA = DRAWFUNC;
+	>>
+
+Complete
+	<<
+		NLA = COMPLETEFUNC;
+	>>
+
+if
+	<<
+		NLA = IF;
+	>>
+
+endif
+	<<
+		NLA = ENDIF;
+	>>
+
+while
+	<<
+		NLA = WHILE;
+	>>
+
+endwhile
+	<<
+		NLA = ENDWHILE;
+	>>
+
+M[1-9]* | [a-zA-LN-Z][a-zA-Z0-9]*
+	<<
+		NLA = ID;
+	>>
+
+>
+	<<
+		NLA = GT;
+	>>
+
+<
+	<<
+		NLA = LT;
+	>>
+
+==
+	<<
+		NLA = EQ;
+	>>
+
+[\ \t \n]
+	<<
+		NLA = SPACE;
+    zzskip();   
+	>>
+
+%%
